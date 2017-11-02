@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PartyFi/.vs/PartyFi/v15/sqlite3/db.lock
+/PartyFi/.vs/PartyFi/v15/Server/sqlite3/db.lock
