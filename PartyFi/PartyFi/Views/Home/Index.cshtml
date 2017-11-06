@@ -2,11 +2,33 @@
     ViewBag.Title = "Home Page";
 }
 
-<body  style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
-    <div class="transparentBox" style="width: 45.5%;vertical-align: middle; height: 92%; float: left; margin-right: 1.5%;padding:13px">
+<script type="text/javascript">
+    function openCodeBoxJoin() {
+        $('#joinButton').remove();
+        $('#hostButton').remove();
+        $('#join').show();
+    }
+
+    function openCreateBox() {
+        $('#joinButton').remove();
+        $('#hostButton').remove();
+        $('#create').show();
+    }
+</script>
+
+<body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
+    <div class="transparentBox" id="hostButton" onclick="openCreateBox()" style="width: 45.5%;vertical-align: middle; height: 92%; float: left; margin-right: 1.5%;padding:13px">
         <h1 style="margin-bottom:20px;">Host a Party Playlist</h1>
     </div>
-    <div class="transparentBox" style="width: 45.5%;vertical-align: middle; height: 92%; float: right; margin-left: 1.5%;padding:13px">
+    <div class="transparentBox" id="joinButton" onclick="openCodeBoxJoin()" style="width: 45.5%;vertical-align: middle; height: 92%; float: right; margin-left: 1.5%;padding:13px">
         <h1 style="margin-bottom:20px;">Join a Party Playlist</h1>
+    </div>
+    <div class="transparentBox" id="host" style="display:none; width:45%; height: 30%;">
+    </div>
+    <div class="transparentBox" id="join" style="display:none; vertical-align:middle; width: 23%; height:18%;">
+        <div style="vertical-align: middle; top: 50%; margin-top:5%; margin-bottom: 5%;">
+            <input class="form-control" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Enter the code for your party!" />
+            <button type="button" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
+        </div>
     </div>
 </body>
