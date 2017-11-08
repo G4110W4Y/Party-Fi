@@ -8,14 +8,14 @@ namespace PartyFi.Controllers
 {
     public class PlaylistController : Controller
     {
-        /* // GET: Playlist
+            // GET: Playlist
             public ActionResult Index()
             {
                 return View();
             }        
-  */
+  
 
-        public string Index()
+      /*  public string Index()
         {
             String clientID = null;
             string clientSecret = null;
@@ -30,6 +30,6 @@ namespace PartyFi.Controllers
             catch (Exception e) { }
 
             return "Client ID: " + clientID + " Client Secret: " + clientSecret;
-        }
+        }   */
     }
 }
