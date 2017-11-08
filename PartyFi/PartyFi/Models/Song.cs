@@ -10,7 +10,7 @@ namespace PartyFi.Models
         public int ID { get; set; }
         public int rank { get; set; }
         public string song { get; set; }
-        public string atrist { get; set; }
+        public string artist { get; set; }
         public bool hasPlayed { get; set; }
 
 
