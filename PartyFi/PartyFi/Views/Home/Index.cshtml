@@ -25,18 +25,20 @@
     </div>
     <div class="transparentBox" id="host" style="display:none; width:23%; height: 18%;">
         <div style="vertical-align: middle; top: 50%; margin-top:5%; margin-bottom: 5%;">
-            <form>
-                <input class="form-control" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Give your playlist a name (optional)" />
-                <button id ="hostButton"type="submit" class="btn btn-success" style="margin-top: 15px;">Create playlist</button>
-            </form>
+            @using (Html.BeginForm("Create", "Home"))
+             {
+                <input id="plName" name="plName" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Give your playlist a name (optional)" />
+                <button id = "hostButton" type="submit" class="btn btn-success" style="margin-top: 15px;">Create playlist</button>
+             }
         </div>
     </div>
     <div class="transparentBox" id="join" style="display:none; vertical-align:middle; width: 23%; height:18%;">
         <div style="vertical-align: middle; top: 50%; margin-top:5%; margin-bottom: 5%;">
-            <form>
-                <input class="form-control" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Enter the code for your party!" required />
+            @using (Html.BeginForm("Join", "Home"))
+            {
+                <input class="form-control" name="codeInput" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Enter the code for your party!" required />
                 <button id="joinButton" type="submit" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
-            </form>
+            }
         </div>
     </div>
 </body>
