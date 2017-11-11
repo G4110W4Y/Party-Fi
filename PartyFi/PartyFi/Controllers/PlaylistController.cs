@@ -18,5 +18,10 @@ namespace PartyFi.Controllers
             return View(PL);
         }
 
+        //needs to be adjusted for guests
+        public ActionResult Join() {
+            return RedirectToAction("Create");
+        }
+
     }
 }

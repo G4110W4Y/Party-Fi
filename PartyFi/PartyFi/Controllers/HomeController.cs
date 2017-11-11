@@ -9,21 +9,29 @@ namespace PartyFi.Controllers
 {
     public class HomeController : Controller
     {
-        keys activeParties = new keys();
+        public keys temp = new keys();
+        public HomeViewModel view = new HomeViewModel();
 
+        //NEEDS TO ACCOUNT FOR BAD CODES
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(bool badCode = false)
         {
-            
-            return View();
+            view.badCode = badCode;
+            return View(view);
         }
 
         public ActionResult Create(string plName) {
             return RedirectToAction("Create", "Playlist", new { playlistName = plName });
         }
 
-        //public ActionResult Join(string codeInput) {
-            
-        //}
+        public ActionResult Join(string codeInput)
+        {
+            temp.stuff.Add("Popeyes89", new Playlist());
+
+            if (temp.stuff.ContainsKey(codeInput))
+                return RedirectToAction("Join", "Playlist");
+            else
+                return RedirectToAction("Index", new {badCode = true});
+        }
     }
 }
