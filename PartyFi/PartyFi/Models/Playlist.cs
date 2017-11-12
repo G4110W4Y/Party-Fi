@@ -15,15 +15,15 @@ namespace PartyFi.Models
     {
         //public string holdThis = "";
 
-        private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
-        public IList<Song> playlist = new List<Song>;
+        private static SpotifyWebAPI Spotify;// = new SpotifyWebAPI();
+        public IList<Song> playlist = new List<Song>();
         private static PrivateProfile profile;
         public string code;
         public Timer timer;
 
         public Playlist()
         {
-            //Authentication();
+            Authentication();
             timer = new Timer(Advance);
             timer.Change(0, 500);
         }
@@ -33,31 +33,67 @@ namespace PartyFi.Models
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
             // What if we poll the size of the playlist list we have? if count !=0, add the first song in the list to the queue  and remove it from the list?
         }
-        public async void Authentication()
+
+        static ImplicitGrantAuth auth;
+        static void Authentication()
         {
-            WebAPIFactory webApiFactory = new WebAPIFactory(
-            "http://localhost/Home/Create",
-            51107,
-            "ba75619adcea46109349a260a683d184",   //Client ID
-            Scope.UserReadPrivate,
-            TimeSpan.FromSeconds(20)
-            );
-
-            try
+            //Create the auth object
+            auth = new ImplicitGrantAuth()
             {
-                //This will open the user's browser and returns once
-                //the user is authorized.
-                Spotify = await webApiFactory.GetWebApi();
-                profile = Spotify.GetPrivateProfile();
-
-            }
-            catch (Exception ex)
-            {
-            }
-
-            if (Spotify == null)
-                return;
+                //Your client Id
+                ClientId = "ba75619adcea46109349a260a683d184",
+                //Set this to localhost if you want to use the built-in HTTP Server
+                RedirectUri = "http://localhost",
+                //How many permissions we need?
+                Scope = Scope.UserReadPrivate,
+            };
+            //Start the internal http server
+            auth.StartHttpServer();
+            //When we got our response
+            auth.OnResponseReceivedEvent += Auth_OnResponseReceivedEvent; ;
+            //Start
+            auth.DoAuth();
         }
+
+        private static void Auth_OnResponseReceivedEvent(Token token, string state)
+        {
+            Spotify = new SpotifyWebAPI();
+            {
+                String TokenType = token.TokenType,
+                AccessToken = token.AccessToken;
+            };
+            //We can now make calls with the token object
+
+            //stop the http server
+            auth.StopHttpServer();
+        }
+
+        //This is the "new way". it does not work
+        //public async void Authentication()
+        //{
+        //    WebAPIFactory webApiFactory = new WebAPIFactory(
+        //    "http://localhost/Home/Create",
+        //    51107,
+        //    "ba75619adcea46109349a260a683d184",   //Client ID
+        //    Scope.UserReadPrivate,
+        //    TimeSpan.FromSeconds(20)
+        //    );
+
+        //    try
+        //    {
+        //        //This will open the user's browser and returns once
+        //        //the user is authorized.
+        //        Spotify = await webApiFactory.GetWebApi();
+        //        profile = Spotify.GetPrivateProfile();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+
+        //    if (Spotify == null)
+        //        return;
+        //}
 
         public static void createPlaylist(string name)
         {
