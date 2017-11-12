@@ -10,9 +10,8 @@ body {
 .body-content {
     height:100%;
     padding: 3%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: white;
+    opacity: 0.5;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -23,7 +22,6 @@ body {
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
 select,
 textarea {
     max-width: 280px;

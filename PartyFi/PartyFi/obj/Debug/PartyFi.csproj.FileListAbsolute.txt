@@ -540,3 +540,5 @@ C:\Users\G4110W4Y\Documents\Chad\Party-Fi\Party-Fi\PartyFi\Party-Fi\PartyFi\Part
 C:\Users\G4110W4Y\Documents\Chad\Party-Fi\Party-Fi\PartyFi\Party-Fi\PartyFi\PartyFi\obj\Debug\PartyFi.csproj.CoreCompileInputs.cache
 C:\Users\G4110W4Y\Documents\Chad\Party-Fi\Party-Fi\PartyFi\Party-Fi\PartyFi\PartyFi\obj\Debug\PartyFi.dll
 C:\Users\G4110W4Y\Documents\Chad\Party-Fi\Party-Fi\PartyFi\Party-Fi\PartyFi\PartyFi\obj\Debug\PartyFi.pdb
+C:\Users\Pixel\Documents\Visual Studio 2017\Projects\Party-Fi\PartyFi\PartyFi\bin\SpotifyAPI.dll
+C:\Users\Pixel\Documents\Visual Studio 2017\Projects\Party-Fi\PartyFi\PartyFi\bin\SpotifyAPI.xml
