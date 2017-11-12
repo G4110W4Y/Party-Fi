@@ -1,28 +1,19 @@
-﻿html {
+﻿.body-content {
     height: 100%;
-    width: 100%;
-}
-body {
-    width: 100%;
-    height: 100%;
-}
-
-/*.body-content {
-    height:100%;
     padding: 3%;
-    background-color: white;
-    opacity: 0.5;
-}*/
+    /*background-color: white;
+    opacity: 0.2;*/
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-/*.dl-horizontal dt {
+.dl-horizontal dt {
     white-space: normal;
-}*/
+}
 
 /* Set width on the form input elements since they're 100% wide by default */
-/*select,
+select,
 textarea {
     max-width: 280px;
 }
@@ -37,16 +28,18 @@ textarea {
     transition: all .5s ease-in;
     opacity: 0.75;
 }
-.transparentBox:hover {
-    border-radius: 5px;
-    opacity: 0.9;
-}
-.transparentBox h1 {
-    font-weight: bold;
-    text-align:center;
-    position: relative;
-    float: left;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}*/
+
+    .transparentBox:hover {
+        border-radius: 5px;
+        opacity: 0.9;
+    }
+
+    .transparentBox h1 {
+        font-weight: bold;
+        text-align: center;
+        position: relative;
+        float: left;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }

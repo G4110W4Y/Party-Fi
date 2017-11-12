@@ -16,7 +16,7 @@ namespace PartyFi.Models
         //public string holdThis = "";
 
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
-        public IList<Song> playlist = new List<Song>;
+        public IList<Song> playlist = new List<Song>();
         private static PrivateProfile profile;
         public string code;
         public Timer timer;
