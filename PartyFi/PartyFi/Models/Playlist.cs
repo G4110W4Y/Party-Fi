@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading;
 
 namespace PartyFi.Models
 {
@@ -15,14 +16,23 @@ namespace PartyFi.Models
         //public string holdThis = "";
 
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
-        public IList<Song> playlist; 
+        public IList<Song> playlist = new List<Song>;
         private static PrivateProfile profile;
         public string code;
+        public Timer timer;
 
-        public Playlist() {
+        public Playlist()
+        {
             //Authentication();
+            timer = new Timer(Advance);
+            timer.Change(0, 500);
         }
 
+        public void Advance(Object sender)
+        {
+            // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
+            // What if we poll the size of the playlist list we have? if count !=0, add the first song in the list to the queue  and remove it from the list?
+        }
         public async void Authentication()
         {
             WebAPIFactory webApiFactory = new WebAPIFactory(
@@ -32,18 +42,18 @@ namespace PartyFi.Models
             Scope.UserReadPrivate,
             TimeSpan.FromSeconds(20)
             );
-           
+
             try
             {
                 //This will open the user's browser and returns once
                 //the user is authorized.
                 Spotify = await webApiFactory.GetWebApi();
                 profile = Spotify.GetPrivateProfile();
-            
+
             }
             catch (Exception ex)
             {
-              }
+            }
 
             if (Spotify == null)
                 return;
@@ -63,7 +73,23 @@ namespace PartyFi.Models
             FullArtist artisto = Spotify.GetArtist(URI);
             string artist = artisto.Name;
             string name = track.Name;
-            playlist = new List<Song>() { new Song() { ID = URI, rank = 1, song = name, artist = artist, hasPlayed = false } };
+            Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = artist, hasPlayed = false };
+            // if a rank goes below 1, we need to be sure to insert the new song before that spot in the list
+            for (int i = 0; i < playlist.Count; i++)
+            {
+                if (newsong.rank < playlist[i].rank)
+                {
+                    continue;
+                }
+                else if (i == playlist.Count - 1)
+                {
+                    playlist.Add(newsong);
+                }
+                else
+                {
+                    playlist.Insert(i, newsong);
+                }
+            }
         }
 
         public void codeGen()
