@@ -17,13 +17,15 @@ namespace PartyFi.Models
 
         private static SpotifyWebAPI Spotify;// = new SpotifyWebAPI();
         public IList<Song> playlist = new List<Song>();
-        private static PrivateProfile profile;
+        private static PrivateProfile profile;// = Spotify.GetPrivateProfile;
         public string code;
         public Timer timer;
+
 
         public Playlist()
         {
             Authentication();
+            //profile = Spotify.GetPrivateProfile();
             timer = new Timer(Advance);
             timer.Change(0, 500);
         }
@@ -34,45 +36,122 @@ namespace PartyFi.Models
             // What if we poll the size of the playlist list we have? if count !=0, add the first song in the list to the queue  and remove it from the list?
         }
 
-        static ImplicitGrantAuth auth;
+        //------------------------------------------------------------------------------------------------------------
+        //I guess ill try Clients Credentials flow
+        static ClientCredentialsAuth auth;
         static void Authentication()
         {
             //Create the auth object
-            auth = new ImplicitGrantAuth()
+            auth = new ClientCredentialsAuth()
             {
                 //Your client Id
                 ClientId = "ba75619adcea46109349a260a683d184",
-                //Set this to localhost if you want to use the built-in HTTP Server
-                RedirectUri = "http://localhost",
+                //Your client secret UNSECURE!!
+                ClientSecret = "e1cb33530db7428590f0526ac184c62e",
                 //How many permissions we need?
                 Scope = Scope.UserReadPrivate,
             };
-            //Start the internal http server
-            auth.StartHttpServer();
-            //When we got our response
-            auth.OnResponseReceivedEvent += Auth_OnResponseReceivedEvent; ;
-            //Start
-            auth.DoAuth();
-        }
-
-        private static void Auth_OnResponseReceivedEvent(Token token, string state)
-        {
-            Spotify = new SpotifyWebAPI();
+            //With this token object, we now can make calls
+            Token token = auth.DoAuth();
+            var spotify = new SpotifyWebApiClass()
             {
-                String TokenType = token.TokenType,
-                AccessToken = token.AccessToken;
+                TokenType = token.TokenType,
+                AccessToken = token.AccessToken,
+                //UseAuth = false
             };
-            //We can now make calls with the token object
-
-            //stop the http server
-            auth.StopHttpServer();
         }
+        //------------------------------------------------------------------------------------------------------------
 
-        //"new method" that doesnt work
+        //------------------------------------------------------------------------------------------------------------
+        //trying AuthorizationCodeAuth
+        //public static AutorizationCodeAuth auth;
+        //public static void Authentication()
+        //{
+        //    //Create the auth object
+        //    auth = new AutorizationCodeAuth()
+        //    {
+        //        //Your client Id
+        //        ClientId = "ba75619adcea46109349a260a683d184",
+        //        //Set this to localhost if you want to use the built-in HTTP Server
+        //        RedirectUri = "http://localhost:51107/Playlist/Create",
+        //        Scope = Scope.UserReadPrivate,
+        //    };
+        //    //This will be called, if the user cancled/accept the auth-request
+        //    auth.OnResponseReceivedEvent += auth_OnResponseReceivedEvent;
+        //    //a local HTTP Server will be started (Needed for the response)
+        //    auth.StartHttpServer();
+        //    //This will open the spotify auth-page. The user can decline/accept the request
+        //    auth.DoAuth();
+
+        //    Thread.Sleep(60000);
+        //    auth.StopHttpServer();
+        //    //Console.WriteLine("Too long, didnt respond, exiting now...");
+        //}
+
+        //private static void auth_OnResponseReceivedEvent(AutorizationCodeAuthResponse response)
+        //{
+
+        //    //NEVER DO THIS! You would need to provide the ClientSecret.
+        //    //You would need to do it e.g via a PHP-Script.
+        //    Token token = auth.ExchangeAuthCode(response.Code, "e1cb33530db7428590f0526ac184c62e");
+
+        //    Spotify = new SpotifyWebAPI()
+        //    {
+        //        TokenType = token.TokenType,
+        //        AccessToken = token.AccessToken
+        //    };
+
+        //    //With the token object, you can now make API calls
+
+        //    //Stop the HTTP Server, done.
+        //    auth.StopHttpServer();
+        //}
+        //-------------------------------------------------------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------------------------
+        //Implicit code Auth using old method
+        //public static ImplicitGrantAuth auth;
+        //public static void Authentication()
+        //{
+        //    //Create the auth object
+        //    auth = new ImplicitGrantAuth()
+        //    {
+        //        //Your client Id
+        //        ClientId = "ba75619adcea46109349a260a683d184",
+        //        //Set this to localhost if you want to use the built-in HTTP Server
+        //        RedirectUri = "http://localhost:51107/Playlist/Create",
+        //        //How many permissions we need?
+        //        Scope = Scope.UserReadPrivate,
+        //    };
+        //    //Start the internal http server
+        //    auth.StartHttpServer();
+        //    //When we got our response
+        //    auth.OnResponseReceivedEvent += Auth_OnResponseReceivedEvent; ;
+        //    //Start
+        //    auth.DoAuth();
+        //}
+
+        //private static void Auth_OnResponseReceivedEvent(Token token, string state)
+        //{
+        //    //Spotify = new SpotifyWebAPI();
+        //    var spotify = new SpotifyWebApiClass()
+        //    {
+        //        TokenType = token.TokenType,
+        //        AccessToken = token.AccessToken
+        //    };
+        //    //We can now make calls with the token object
+
+        //    //stop the http server
+        //    auth.StopHttpServer();
+        //}
+        //-------------------------------------------------------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------------------------
+        //"new method" that doesnt work  (Implicit code flow)
         //public async void Authentication()
         //{
         //    WebAPIFactory webApiFactory = new WebAPIFactory(
-        //    "http://localhost/Home/Create",
+        //    "http://localhost/Playlist/Create",
         //    51107,
         //    "ba75619adcea46109349a260a683d184",   //Client ID
         //    Scope.UserReadPrivate,
@@ -84,7 +163,7 @@ namespace PartyFi.Models
         //        //This will open the user's browser and returns once
         //        //the user is authorized.
         //        Spotify = await webApiFactory.GetWebApi();
-        //        profile = Spotify.GetPrivateProfile();
+        //        //profile = Spotify.GetPrivateProfile();
 
         //    }
         //    catch (Exception ex)
@@ -94,6 +173,7 @@ namespace PartyFi.Models
         //    if (Spotify == null)
         //        return;
         //}
+        //-------------------------------------------------------------------------------------------------------
 
         public static void createPlaylist(string name)
         {
