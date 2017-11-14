@@ -21,7 +21,7 @@ namespace PartyFi.Controllers
         }
 
         public ActionResult Create(string plName) {
-            return RedirectToAction("Create", "Playlist", new { playlistName = plName });
+            return RedirectToAction(/*"Authenticate"*/"Create", "Playlist", new { playlistName = plName });
         }
 
         public ActionResult Join(string codeInput)

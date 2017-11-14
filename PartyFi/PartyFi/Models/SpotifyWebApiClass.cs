@@ -1,6 +1,6 @@
 ﻿namespace PartyFi.Models
 {
-    internal class SpotifyWebApiClass
+    public class SpotifyWebApiClass
     {
         public SpotifyWebApiClass()
         {

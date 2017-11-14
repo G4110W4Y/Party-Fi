@@ -16,6 +16,7 @@ namespace PartyFi.Models
         //public string holdThis = "";
 
         private static SpotifyWebAPI Spotify;// = new SpotifyWebAPI();
+        //public SpotifyWebApiClass spotify = null;
         public IList<Song> playlist = new List<Song>();
         private static PrivateProfile profile;// = Spotify.GetPrivateProfile;
         public string code;
@@ -47,7 +48,7 @@ namespace PartyFi.Models
                 //Your client Id
                 ClientId = "ba75619adcea46109349a260a683d184",
                 //Set this to localhost if you want to use the built-in HTTP Server
-                RedirectUri = "http://localhost:51107/Playlist/Create",
+                RedirectUri = "http://localhost",//:51107/Playlist/Create",
                 //How many permissions we need?
                 Scope = Scope.UserReadPrivate,
             };
@@ -61,8 +62,8 @@ namespace PartyFi.Models
 
         private static void Auth_OnResponseReceivedEvent(Token token, string state)
         {
-            //Spotify = new SpotifyWebAPI();
-            var spotify = new SpotifyWebApiClass()
+            Spotify = new SpotifyWebAPI()
+            //spotify = new SpotifyWebApiClass()
             {
                 TokenType = token.TokenType,
                 AccessToken = token.AccessToken

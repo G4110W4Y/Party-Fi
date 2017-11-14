@@ -9,12 +9,20 @@ namespace PartyFi.Controllers
 {
     public class PlaylistController : Controller
     {
-        public Playlist PL = new Playlist();
+        public Playlist PL = null; //new Playlist();
+
+        public void Authenticate(string playlistName = "Party-Fi")
+        {
+            PL = new Playlist();
+            PL.codeGen();
+            //return RedirectToAction("Create", "Playlist");
+        }
 
         // GET: Playlist
         public ActionResult Create(/*string playlistName = "Party-Fi"*/)
         {
-            PL.codeGen();
+            //PL.codeGen();
+            Authenticate();
             return View(PL);
         }
 
