@@ -18,6 +18,12 @@ namespace PartyFi.Controllers
             return View(PL);
         }
 
+        //Possibly add a different view to look at playlist
+        //public ActionResult ViewPL()
+        //{
+
+        //}
+
         //needs to be adjusted for guests
         public ActionResult Join() {
             return RedirectToAction("Create");
