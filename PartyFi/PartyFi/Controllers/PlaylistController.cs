@@ -16,7 +16,18 @@ namespace PartyFi.Controllers
         {
             PL.codeGen();
             return View(PL);
+            //return RedirectToAction("ViewPL", "Playlist");
         }
+
+        public ActionResult Search(string search)
+        {
+            return View("~/Views/Playlist/Create.cshtml", search);
+        }
+
+        //public ActionResult ViewPL(/*string playlistName = "Party-Fi"*/)
+        //{
+        //    return View(PL);
+        //}
 
         //needs to be adjusted for guests
         public ActionResult Join() {

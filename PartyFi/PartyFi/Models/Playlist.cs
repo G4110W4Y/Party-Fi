@@ -18,7 +18,8 @@ namespace PartyFi.Models
         //public string holdThis = "";
 
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
-        public IList<Song> playlist = new List<Song>();
+        public static IList<Song> playlist = new List<Song>();
+        public IList<FullTrack> searchTracks = new List<FullTrack>();
         private static PrivateProfile profile;
         public string code;
         public Timer timer;
@@ -29,7 +30,7 @@ namespace PartyFi.Models
             timer = new Timer(Advance);
             timer.Change(0, 500);
         }
-     
+
         public void Advance(Object sender)
         {
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
@@ -38,9 +39,12 @@ namespace PartyFi.Models
 
         public async void Trest()
         {
-            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:5o4yGlG0PfeVUa6ClIyOxq", "spotify:track:7ccI9cStQbQdystvc6TvxD" });
-            System.Threading.Thread.Sleep(10000);
-            error = Spotify.SkipPlaybackToNext();
+            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:4OrLnFkB5Ebct9HNT5xU2i"});
+            //System.Threading.Thread.Sleep(10000);
+            //error = Spotify.PausePlayback();
+            //System.Threading.Thread.Sleep(5000);
+            //error = Spotify.ResumePlayback();
+            //error = Spotify.SkipPlaybackToNext();
         }
         public async void Authentication()
         {
@@ -69,12 +73,29 @@ namespace PartyFi.Models
             Trest();
         }
 
-        public static void createPlaylist(string name)
+        //public static void createPlaylist(string name)
+        //{
+        //    string profileID = profile.Id;
+        //    FullPlaylist newPlaylist = Spotify.CreatePlaylist(profileID, name);
+        //    string playlistID = newPlaylist.Id;
+        //    ErrorResponse response = Spotify.AddPlaylistTracks(profileID, playlistID, new List<string> { "5WggjuxMubr94bo33Aan4K", "6ORDSA2FoPpoCZzqoDaX8E", "32zkKx35Et6A515oZKxDkD" });
+        //}
+
+        public void searchSong(string search)
         {
-            string profileID = profile.Id;
-            FullPlaylist newPlaylist = Spotify.CreatePlaylist(profileID, name);
-            string playlistID = newPlaylist.Id;
-            ErrorResponse response = Spotify.AddPlaylistTracks(profileID, playlistID, new List<string> { "5WggjuxMubr94bo33Aan4K", "6ORDSA2FoPpoCZzqoDaX8E", "32zkKx35Et6A515oZKxDkD" });
+            string query = search.Replace(' ', '+');
+            SearchItem item = Spotify.SearchItems(query, SearchType.Track);
+
+            foreach (FullTrack track in item.Tracks.Items)
+            {
+                searchTracks.Add(track);
+            }
+        }
+
+        public void playSong(string uri)
+        {
+            string current = "spotify:track:" + uri;
+            ErrorResponse error = Spotify.ResumePlayback(current);
         }
 
         public void addSong(string URI)
