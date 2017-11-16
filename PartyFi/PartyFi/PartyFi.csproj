@@ -154,7 +154,6 @@
     <Compile Include="Models\keys.cs" />
     <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\Song.cs" />
-    <Compile Include="Models\SpotifyWebApiClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
