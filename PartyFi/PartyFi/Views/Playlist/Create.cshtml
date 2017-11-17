@@ -20,9 +20,11 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-sm-12 transparentBox" style="background-color:white; opacity:0.6">
+        <div class="col-sm-12 transparentBox" style="background-color:white; opacity:0.6; display:table-header-group">
             <table class="table table-hover">
-                <thead>
+                @*
+                    This didn't really want to work
+                    <thead>
                     <tr>
                         <th>Song</th>
                         <th>Rank</th>
@@ -30,22 +32,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% foreach (var song in playlist) { %>
                     <tr>
-                        <td>song 1</td>
-                        <td>13</td>
-                        <td>asdf</td>
+                        <td><%= song.song %></td>
+                        <td><%= song.rank %></td>
+                        <td>U/D</td>
                     </tr>
-                    <tr>
-                        <td>song2</td>
-                        <td>2</td>
-                        <td>asdf</td>
-                    </tr>
-                    <tr>
-                        <td>song3</td>
-                        <td>-4</td>
-                        <td>asdf</td>
-                    </tr>
-                </tbody>
+                    <% } %>
+                </tbody>*@
+                 
             </table>
         </div>
     </div>

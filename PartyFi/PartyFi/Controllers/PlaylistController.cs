@@ -9,7 +9,7 @@ namespace PartyFi.Controllers
 {
     public class PlaylistController : Controller
     {
-        public Playlist PL = new Playlist();
+        public static Playlist PL = new Playlist();
 
         // GET: Playlist
         public ActionResult Create(/*string playlistName = "Party-Fi"*/)

@@ -16,6 +16,7 @@ namespace PartyFi.Models
         public string song { get; set; }
         public string artist { get; set; }
         public bool hasPlayed { get; set; }
+        public int length { get; set; }
 
 
     }

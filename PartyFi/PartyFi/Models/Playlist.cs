@@ -28,24 +28,36 @@ namespace PartyFi.Models
         {
             Task.Run(() => Authentication());
             timer = new Timer(Advance);
-            timer.Change(0, 500);
         }
 
         public void Advance(Object sender)
         {
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
             // What if we poll the size of the playlist list we have? if count !=0, add the first song in the list to the queue  and remove it from the list?
+            timer.Dispose();
+            timer = new Timer(Advance);
+            if (playlist.Count > 0)
+            {
+                playSong(playlist[0].ID);
+                timer.Change(playlist[0].length, playlist[0].length);
+                playlist.RemoveAt(0);
+            }
         }
 
         public async void Trest()
         {
+            // Some ghostemane
+            addSong("2Vc6NJ9PW9gD9q343XFRKx");
+            // Some weeb shit
+            addSong("2pxftVTI1ACfpvcryvebxd");
+            // Some basic shit
+            addSong("060X6dRG9lWF1sp8y1ssYe");
+            // If i have to hear the first 10 seconds of "Boys" one more time i fucking swear i will delete the entire internet
             ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:4OrLnFkB5Ebct9HNT5xU2i"});
-            //System.Threading.Thread.Sleep(10000);
-            //error = Spotify.PausePlayback();
-            //System.Threading.Thread.Sleep(5000);
-            //error = Spotify.ResumePlayback();
-            //error = Spotify.SkipPlaybackToNext();
+            // Play the song for 30 seconds before going into the main queueing system
+            timer.Change(30000, 30000);
         }
+
         public async void Authentication()
         {
             WebAPIFactory webApiFactory = new WebAPIFactory(
@@ -95,7 +107,7 @@ namespace PartyFi.Models
         public void playSong(string uri)
         {
             string current = "spotify:track:" + uri;
-            ErrorResponse error = Spotify.ResumePlayback(current);
+            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string>{ current });
         }
 
         public void addSong(string URI)
@@ -104,23 +116,29 @@ namespace PartyFi.Models
             FullArtist artisto = Spotify.GetArtist(URI);
             string artist = artisto.Name;
             string name = track.Name;
-            Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = artist, hasPlayed = false };
+            Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = artist, hasPlayed = false, length = track.DurationMs };
             // if a rank goes below 1, we need to be sure to insert the new song before that spot in the list
-            for (int i = 0; i < playlist.Count; i++)
-            {
-                if (newsong.rank < playlist[i].rank)
-                {
-                    continue;
-                }
-                else if (i == playlist.Count - 1)
-                {
-                    playlist.Add(newsong);
-                }
-                else
-                {
-                    playlist.Insert(i, newsong);
-                }
-            }
+            // hahaha i lied. let's just make a sorting function to sort hte list everytime we add shit. (sort by rank, and preserve original order)
+            playlist.Add(newsong);
+            //if(playlist.Count == 0)
+            //{
+            //    playlist.Add(newsong);
+            //}
+            //for (int i = 0; i < playlist.Count; i++)
+            //{
+            //    if (newsong.rank < playlist[i].rank)
+            //    {
+            //        continue;
+            //    }
+            //    else if (i == playlist.Count - 1)
+            //    {
+            //        playlist.Add(newsong);
+            //    }
+            //    else
+            //    {
+            //        playlist.Insert(i, newsong);
+            //    }
+            //}
         }
 
         public void codeGen()
