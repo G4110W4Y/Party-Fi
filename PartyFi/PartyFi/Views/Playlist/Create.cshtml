@@ -5,14 +5,14 @@
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
     <div class="row transparentBox">
         <div class="col-sm-5" style="background-color:white; opacity:0.6; margin: 5px; height: 38px;">
-            
+
             @using (Html.BeginForm("Search", "Playlist"))
             {
-                
-                    <div class="form-group container-fluid">
-                        <input type="text" placeholder="Search for a song..." class="form-control" id="search" style="max-width:75%">
-                    </div>
-               
+
+                <div class="form-group container-fluid">
+                    <input type="text" placeholder="Search for a song..." class="form-control" id="search" style="max-width:75%">
+                </div>
+
             }
         </div>
         <div class="col-sm-5" style="background-color:white; opacity:0.7; text-align:left;"><h3 style="margin-top: 3px;">Code: @Model.code</h3></div>
@@ -22,9 +22,7 @@
     <div class="row">
         <div class="col-sm-12 transparentBox" style="background-color:white; opacity:0.6; display:table-header-group">
             <table class="table table-hover">
-                @*
-                    This didn't really want to work
-                    <thead>
+                <thead>
                     <tr>
                         <th>Song</th>
                         <th>Rank</th>
@@ -32,15 +30,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% foreach (var song in playlist) { %>
+                    @foreach (var song in Model.playlist) { 
                     <tr>
-                        <td><%= song.song %></td>
-                        <td><%= song.rank %></td>
+                        <td>@song.song</td>
+                        <td>@song.rank</td>
                         <td>U/D</td>
                     </tr>
-                    <% } %>
-                </tbody>*@
-                 
+                     }
+                </tbody>
+
             </table>
         </div>
     </div>

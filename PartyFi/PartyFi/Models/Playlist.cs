@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Web.Script.Serialization;
 
 namespace PartyFi.Models
 {
@@ -18,18 +18,22 @@ namespace PartyFi.Models
         //public string holdThis = "";
 
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
-        public static IList<Song> playlist = new List<Song>();
+        public IList<Song> playlist = new List<Song>();
         public IList<FullTrack> searchTracks = new List<FullTrack>();
         private static PrivateProfile profile;
         public string code;
         public Timer timer;
+        public string json;
 
         public Playlist()
         {
             Task.Run(() => Authentication());
             timer = new Timer(Advance);
         }
-
+        public void Json()
+        {
+            json =new JavaScriptSerializer().Serialize(playlist);
+        }
         public void Advance(Object sender)
         {
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
@@ -53,9 +57,9 @@ namespace PartyFi.Models
             // Some basic shit
             addSong("060X6dRG9lWF1sp8y1ssYe");
             // If i have to hear the first 10 seconds of "Boys" one more time i fucking swear i will delete the entire internet
-            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:4OrLnFkB5Ebct9HNT5xU2i"});
+            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:72gu8Kc5KjYdAoVPpRkZMk" });
             // Play the song for 30 seconds before going into the main queueing system
-            timer.Change(30000, 30000);
+            timer.Change(180000, 30000);
         }
 
         public async void Authentication()
@@ -64,7 +68,7 @@ namespace PartyFi.Models
             "http://localhost",
             8000,
             "ba75619adcea46109349a260a683d184",   //Client ID
-            Scope.UserReadPrivate,
+            Scope.UserReadPrivate | Scope.Streaming,
             TimeSpan.FromSeconds(20)
             );
 
@@ -120,6 +124,7 @@ namespace PartyFi.Models
             // if a rank goes below 1, we need to be sure to insert the new song before that spot in the list
             // hahaha i lied. let's just make a sorting function to sort hte list everytime we add shit. (sort by rank, and preserve original order)
             playlist.Add(newsong);
+            Json();
             //if(playlist.Count == 0)
             //{
             //    playlist.Add(newsong);
