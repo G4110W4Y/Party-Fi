@@ -1,26 +1,53 @@
 ﻿@model PartyFi.Models.Playlist
 
 <link rel="stylesheet" href="~/Content/Home.css" />
+<link rel="stylesheet" href="~/Content/Create.css" />
+
+<script>
+    var timer = null;
+    function testKeyup() {
+        clearTimeout(timer);
+        timer = setTimeout(doneTyping, 2000);
+    }
+    function testKeydown() {
+        clearTimeout(timer);
+    }
+    function doneTyping() {
+        var typed = document.getElementById("search").value;
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '@Url.Action("Search", "Playlist")',
+            data: { search: typed },
+            success: function (searchList) {
+                var searchList = document.getElementById('searchList');
+                for (var i = 0; i < searchList.length; i++) {
+                    //alert(searchList[i].Uri);
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(searchList[i].Name + "--" + searchList[i].Artists));
+                    li.setAttribute("value", searchList[i].Uri);
+                    searchList.appendChild(li);
+                }
+            },
+        });
+    }
+</script>
 
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
     <div class="row transparentBox">
         <div class="col-sm-5" style="background-color:white; opacity:0.6; margin: 5px; height: 38px;">
-
-            @using (Html.BeginForm("Search", "Playlist"))
-            {
-
-                <div class="form-group container-fluid">
-                    <input type="text" placeholder="Search for a song..." class="form-control" id="search" style="max-width:75%">
-                </div>
-
-            }
+            <input type="text" onkeydown="testKeydown()" onkeyup="testKeyup()" id="search" class="form-control" placeholder="Search for a song..." style="max-width:75%">
+            <div style="position:relative; z-index: 100; opacity:1.0;">
+                <ul id="searchList">
+                </ul>
+            </div>
         </div>
         <div class="col-sm-5" style="background-color:white; opacity:0.7; text-align:left;"><h3 style="margin-top: 3px;">Code: @Model.code</h3></div>
         <div class="col-sm-1" style="background-color:white; opacity:0.7; float: right; margin: 3px;"><button type="button" class="btn">Veto</button></div>
     </div>
     <br />
     <div class="row">
-        <div class="col-sm-12 transparentBox" style="background-color:white; opacity:0.6; display:table-header-group">
+        <div class="col-sm-12 transparentBox" style="z-index: 1; background-color:white; opacity:0.6; display:table-header-group">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -30,13 +57,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var song in Model.playlist) { 
-                    <tr>
-                        <td>@song.song</td>
-                        <td>@song.rank</td>
-                        <td>U/D</td>
-                    </tr>
-                     }
+                    @foreach (var song in Model.playlist)
+                    {
+                        <tr>
+                            <td>@song.song</td>
+                            <td>@song.rank</td>
+                            <td>U/D</td>
+                        </tr>
+                    }
                 </tbody>
 
             </table>
