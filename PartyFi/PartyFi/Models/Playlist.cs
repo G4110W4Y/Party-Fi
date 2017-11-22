@@ -30,10 +30,10 @@ namespace PartyFi.Models
             Task.Run(() => Authentication());
             timer = new Timer(Advance);
         }
-        public void Json()
-        {
-            json =new JavaScriptSerializer().Serialize(playlist);
-        }
+        //public void Json()
+        //{
+        //    json =new JavaScriptSerializer().Serialize(playlist);
+        //}
         public void Advance(Object sender)
         {
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
@@ -43,23 +43,24 @@ namespace PartyFi.Models
             if (playlist.Count > 0)
             {
                 playSong(playlist[0].ID);
-                timer.Change(playlist[0].length, playlist[0].length);
+                timer.Change(/*playlist[0].length*/ 30000, playlist[0].length);
                 playlist.RemoveAt(0);
             }
         }
 
+        
         public async void Trest()
         {
-            // Some ghostemane
-            addSong("2Vc6NJ9PW9gD9q343XFRKx");
+            // Some ghostemane--nah fam
+            addSong("3FtYbEfBqAlGO46NUDQSAt");
             // Some weeb shit
             addSong("2pxftVTI1ACfpvcryvebxd");
             // Some basic shit
             addSong("060X6dRG9lWF1sp8y1ssYe");
             // If i have to hear the first 10 seconds of "Boys" one more time i fucking swear i will delete the entire internet
-            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:72gu8Kc5KjYdAoVPpRkZMk" });
+            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:1gei6SEOLzPjMGY2TA95nq" });      //test play
             // Play the song for 30 seconds before going into the main queueing system
-            timer.Change(180000, 30000);
+            timer.Change(30000, 30000);
         }
 
         public async void Authentication()
@@ -117,14 +118,16 @@ namespace PartyFi.Models
         public void addSong(string URI)
         {
             FullTrack track = Spotify.GetTrack(URI);
-            FullArtist artisto = Spotify.GetArtist(URI);
-            string artist = artisto.Name;
+            string laArtista = track.Artists[0].Name;
             string name = track.Name;
-            Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = artist, hasPlayed = false, length = track.DurationMs };
+            Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = laArtista, hasPlayed = false, length = track.DurationMs };
             // if a rank goes below 1, we need to be sure to insert the new song before that spot in the list
             // hahaha i lied. let's just make a sorting function to sort hte list everytime we add shit. (sort by rank, and preserve original order)
             playlist.Add(newsong);
-            Json();
+            sort();
+
+            //Json();
+            
             //if(playlist.Count == 0)
             //{
             //    playlist.Add(newsong);
@@ -174,7 +177,19 @@ namespace PartyFi.Models
                 "Otter"
             };
             Random gen = new Random();
-            code = aminuls[gen.Next(aminuls.Count())] + gen.Next(1000);
+            //code = aminuls[gen.Next(aminuls.Count())] + gen.Next(1000);
+            code = "Popeyes89";
+        }
+        public void sort()
+        {
+            playlist = playlist.OrderByDescending(x=>x.rank).ToList();
+            //for(int i = 0; i<playlist.Count-2; i++)
+            //{
+            //    if (playlist[i].rank > playlist[i +].rank)
+            //    {
+            //        playlist.
+            //    }
+            //}
         }
 
     }

@@ -32,6 +32,21 @@
         });
     }
 </script>
+<script>
+    var time = new Date().getTime();
+    $(document.body).bind("mousemove keypress", function (e) {
+        time = new Date().getTime();
+    });
+
+    function refresh() {
+        if (new Date().getTime() - time >= 1000)
+            window.location.reload(true);
+        else
+            setTimeout(refresh, 1000);
+    }
+
+    setTimeout(refresh, 1000);
+</script>
 
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
     <div class="row transparentBox">
@@ -47,11 +62,12 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-sm-12 transparentBox" style="z-index: 1; background-color:white; opacity:0.6; display:table-header-group">
+        <div class="col-sm-12 transparentBox" style="z-index: 1; background-color:white; opacity:0.6; display:table-header-group;">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Song</th>
+                        <th>Artist</th>
                         <th>Rank</th>
                         <th>Upvote/Downvote</th>
                     </tr>
@@ -61,8 +77,12 @@
                     {
                         <tr>
                             <td>@song.song</td>
+                            <td>@song.artist</td>
                             <td>@song.rank</td>
-                            <td>U/D</td>
+                            <td>
+                                @Html.ActionLink("Up", "Up", new { id = Model.playlist.IndexOf(song) })
+                                @Html.ActionLink("Down", "Down", new { id = Model.playlist.IndexOf(song) })
+                            </td>
                         </tr>
                     }
                 </tbody>

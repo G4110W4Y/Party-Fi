@@ -9,11 +9,15 @@ namespace PartyFi.Controllers
 {
     public class PlaylistController : Controller
     {
-        public static Playlist PL = new Playlist();
+        public static Playlist PL;
 
         // GET: Playlist
         public ActionResult Create(/*string playlistName = "Party-Fi"*/)
         {
+            if(PL == null)
+            {
+                PL = new Playlist();
+            }
             PL.codeGen();
             return View(PL);
         }
@@ -29,6 +33,17 @@ namespace PartyFi.Controllers
             PL.searchSong(search);
             return Json(PL.searchTracks, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult Up(int? id)
+        {
+            PL.playlist[(int)id].rank++;
+            PL.sort();
+            return RedirectToAction("Create");
+        }
+        public ActionResult Down(int? id)
+        {
+            PL.playlist[(int)id].rank--;
+            PL.sort();
+            return RedirectToAction("Create");
+        }
     }
 }
