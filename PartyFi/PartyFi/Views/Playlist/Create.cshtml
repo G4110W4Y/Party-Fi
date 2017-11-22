@@ -14,46 +14,53 @@
     }
     function doneTyping() {
         var typed = document.getElementById("search").value;
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: '@Url.Action("Search", "Playlist")',
-            data: { search: typed },
-            success: function (searchList) {
-                var searchList = document.getElementById('searchList');
-                for (var i = 0; i < searchList.length; i++) {
-                    //alert(searchList[i].Uri);
-                    var li = document.createElement("li");
-                    li.appendChild(document.createTextNode(searchList[i].Name + "--" + searchList[i].Artists));
-                    li.setAttribute("value", searchList[i].Uri);
-                    searchList.appendChild(li);
-                }
-            },
-        });
+        if (typed != "") {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '@Url.Action("Search", "Playlist")',
+                data: { search: typed },
+                success: function (list) {
+                    var ul = document.getElementById("generatedUL");
+                    var isThereList = document.getElementById("temp");
+                    if (ul.childElementCount > 1 && isThereList != null && isThereList.length) {
+                        ul.removeChild(isThereList);
+                    }
+                    else {
+                        $('#generatedUL').empty();
+                        $('#generatedUL').empty();
+                    }
+                    for (i = 0; i < list.length; i++) {
+                        $("#generatedUL").append("<li value=\"" + list[i].Uri + "\"><a>" + list[i].Artists[0].Name + " - " + list[i].Name + "</a></li>");
+                    }
+                },
+            });
+        }
     }
 </script>
 <script>
-    var time = new Date().getTime();
-    $(document.body).bind("mousemove keypress", function (e) {
-        time = new Date().getTime();
-    });
+    //var time = new Date().getTime();
+    //$(document.body).bind("mousemove keypress", function (e) {
+    //    time = new Date().getTime();
+    //});
 
-    function refresh() {
-        if (new Date().getTime() - time >= 1000)
-            window.location.reload(true);
-        else
-            setTimeout(refresh, 1000);
-    }
+    //function refresh() {
+    //    if (new Date().getTime() - time >= 1000)
+    //        window.location.reload(true);
+    //    else
+    //        setTimeout(refresh, 1000);
+    //}
 
-    setTimeout(refresh, 1000);
+    //setTimeout(refresh, 1000);
 </script>
 
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
     <div class="row transparentBox">
         <div class="col-sm-5" style="background-color:white; opacity:0.6; margin: 5px; height: 38px;">
             <input type="text" onkeydown="testKeydown()" onkeyup="testKeyup()" id="search" class="form-control" placeholder="Search for a song..." style="max-width:75%">
-            <div style="position:relative; z-index: 100; opacity:1.0;">
-                <ul id="searchList">
+            <div class="container-fluid" id="generatedULContainer" style="display: block; width: 100%; height: 226px; overflow: auto; margin-top: 0px;">
+                <ul id="generatedUL" style="list-style-type:none; padding-top: 0px; margin-top: 0px;">
+                    <li id="temp" style="display: none;"></li>
                 </ul>
             </div>
         </div>
