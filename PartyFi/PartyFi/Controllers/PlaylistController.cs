@@ -34,6 +34,11 @@ namespace PartyFi.Controllers
             PL.searchSong(search);
             return Json(PL.searchTracks, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public ActionResult PlaylistTable()
+        {
+            return PartialView(PL);
+        }
         [HttpPost]
         public ActionResult AddSong(string song)
         {

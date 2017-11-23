@@ -54,14 +54,22 @@
     //    time = new Date().getTime();
     //});
 
-    function refresh() {
-        if (new Date().getTime() - time >= 1000)
-            window.location.reload(true);
-        else
-            setTimeout(refresh, 1000);
-    }
+    //function refresh() {
+    //    if (new Date().getTime() - time >= 1000)
+    //        window.location.reload(true);
+    //    else
+    //        setTimeout(refresh, 1000);
+    //}
 
     //setTimeout(refresh, 1000);
+
+    //auto refresh on playlist table
+    $(function () {
+
+        setInterval(function () { $('#PLTable').load('/Playlist/PlaylistTable'); }, 3000); // every 3 sec
+
+    });
+
 </script>
 
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
@@ -79,33 +87,8 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-sm-12 container-fluid transparentBox" style="z-index: 1; background-color:white; opacity:0.6; display:table-header-group; width:100%;">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Song</th>
-                        <th>Artist</th>
-                        <th>Rank</th>
-                        <th>Upvote/Downvote</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var song in Model.playlist)
-                    {
-                        <tr>
-                            <td style="width: 40%;">@song.song</td>
-                            <td style="width: 30%;">@song.artist</td>
-                            <td style="width: 15%;">@song.rank</td>
-                            <td style="width: 15%
-;">
-                                @Html.ActionLink("Up", "Up", new { id = Model.playlist.IndexOf(song) })
-                                @Html.ActionLink("Down", "Down", new { id = Model.playlist.IndexOf(song) })
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-
-            </table>
+        <div id="PLTable" class="col-sm-12 container-fluid transparentBox" style="z-index: 1; background-color:white; opacity:0.6; display:table-header-group; width:100%;">
+            @{Html.RenderAction("PlaylistTable", "Playlist");}
         </div>
     </div>
 </body>
