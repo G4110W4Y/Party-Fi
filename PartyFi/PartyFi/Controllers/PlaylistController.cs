@@ -17,8 +17,9 @@ namespace PartyFi.Controllers
             if(PL == null)
             {
                 PL = new Playlist();
+                PL.codeGen();
             }
-            PL.codeGen();
+            //PL.codeGen();
             return View(PL);
         }
 
@@ -32,6 +33,12 @@ namespace PartyFi.Controllers
             PL.searchTracks.Clear();
             PL.searchSong(search);
             return Json(PL.searchTracks, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult AddSong(string song)
+        {
+            PL.addSong(song);
+            return RedirectToAction("Create");
         }
         public ActionResult Up(int? id)
         {

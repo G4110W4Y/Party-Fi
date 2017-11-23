@@ -1,21 +1,26 @@
-﻿#searchList {
-    max-width:75%;
+﻿#generatedUL {
+    max-width: 100%;
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-    #searchList li a {
+    #generatedUL li a {
         border: 1px solid #ddd;
         margin-top: -1px; /* Prevent double borders */
-        background-color: #f6f6f6;
-        padding: 12px;
+        background-color: #f7fbff;
+        /*padding: 12px;*/
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 2px;
+        padding-top: 4px;
         text-decoration: none;
-        font-size: 18px;
+        font-size: 14px;
         color: black;
         display: block
     }
 
-        #searchList li a:hover:not(.header) {
-            background-color: #eee;
+        #generatedUL li a:hover:not(.header) {
+            z-index: 3;
+            background-color: #ffffff;
         }
