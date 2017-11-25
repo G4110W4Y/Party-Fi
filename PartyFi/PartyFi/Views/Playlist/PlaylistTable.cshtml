@@ -1,7 +1,7 @@
 ﻿@model PartyFi.Models.Playlist
 
-<table class="table table-hover">
-    <thead>
+<table class="table table-hover col-md-1">
+    <thead align="center">
         <tr>
             <th>Song</th>
             <th>Artist</th>
@@ -13,13 +13,17 @@
         @foreach (var song in Model.playlist)
         {
             <tr>
-                <td style="width: 40%;">@song.song</td>
+                <td style="width: 30%;">@song.song</td>
                 <td style="width: 30%;">@song.artist</td>
                 <td style="width: 15%;">@song.rank</td>
-                <td style="width: 15%
+                <td style="width: 15%;
 ;">
-                    @Html.ActionLink("Up", "Up", new { id = Model.playlist.IndexOf(song) })
-                    @Html.ActionLink("Down", "Down", new { id = Model.playlist.IndexOf(song) })
+                    @Html.ActionLink("Up  ", "Up", new { id = Model.playlist.IndexOf(song) })
+                    @Html.ActionLink("  Down", "Down", new { id = Model.playlist.IndexOf(song) })
+
+                </td>
+                <td style="width: 10%;">
+                    @Html.ActionLink("Delete", "Remove", new { id = Model.playlist.IndexOf(song) })
                 </td>
             </tr>
         }

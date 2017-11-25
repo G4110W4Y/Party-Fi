@@ -22,6 +22,7 @@ namespace PartyFi.Models
         public IList<FullTrack> searchTracks = new List<FullTrack>();
         private static PrivateProfile profile;
         public string code;
+        public string currentSong = "nothing";
         public Timer timer;
         public string json;
 
@@ -43,12 +44,23 @@ namespace PartyFi.Models
             if (playlist.Count > 0)
             {
                 playSong(playlist[0].ID);
+                current(playlist[0].ID);
                 timer.Change(/*playlist[0].length*/ 30000, playlist[0].length);
+
                 playlist.RemoveAt(0);
             }
         }
 
-        
+        public void current(string ID)
+        {
+            for (int x = 0; x < playlist.Count; x++)
+                if (playlist[x].ID == ID)
+                {
+                    currentSong = playlist[x].song + "  Artist: " + playlist[x].artist;
+                }
+
+        }
+
         public async void Trest()
         {
             // Some ghostemane--nah fam
@@ -58,7 +70,7 @@ namespace PartyFi.Models
             // Some basic shit
             addSong("060X6dRG9lWF1sp8y1ssYe");
             // If i have to hear the first 10 seconds of "Boys" one more time i fucking swear i will delete the entire internet
-            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:1gei6SEOLzPjMGY2TA95nq" });      //test play
+            //       ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:1gei6SEOLzPjMGY2TA95nq" });      //test play
             // Play the song for 30 seconds before going into the main queueing system
             timer.Change(30000, 30000);
         }
@@ -112,7 +124,7 @@ namespace PartyFi.Models
         public void playSong(string uri)
         {
             string current = "spotify:track:" + uri;
-            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string>{ current });
+            ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { current });
         }
 
         public void addSong(string URI)
@@ -127,7 +139,7 @@ namespace PartyFi.Models
             sort();
 
             //Json();
-            
+
             //if(playlist.Count == 0)
             //{
             //    playlist.Add(newsong);
@@ -182,7 +194,14 @@ namespace PartyFi.Models
         }
         public void sort()
         {
-            playlist = playlist.OrderByDescending(x=>x.rank).ToList();
+            for (int x = 0; x < playlist.Count; x++)
+            {
+                if (playlist[x].hasPlayed == true)
+                {
+                    playlist.RemoveAt(x);
+                }
+            }
+            playlist = playlist.OrderByDescending(x => x.rank).ToList();
             //for(int i = 0; i<playlist.Count-2; i++)
             //{
             //    if (playlist[i].rank > playlist[i +].rank)

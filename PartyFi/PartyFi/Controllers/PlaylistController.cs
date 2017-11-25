@@ -14,7 +14,7 @@ namespace PartyFi.Controllers
         // GET: Playlist
         public ActionResult Create(/*string playlistName = "Party-Fi"*/)
         {
-            if(PL == null)
+            if (PL == null)
             {
                 PL = new Playlist();
                 PL.codeGen();
@@ -24,12 +24,14 @@ namespace PartyFi.Controllers
         }
 
         //needs to be adjusted for guests
-        public ActionResult Join() {
+        public ActionResult Join()
+        {
             return RedirectToAction("Create");
         }
 
         [HttpGet]
-        public ActionResult Search(string search) {
+        public ActionResult Search(string search)
+        {
             PL.searchTracks.Clear();
             PL.searchSong(search);
             return Json(PL.searchTracks, JsonRequestBehavior.AllowGet);
@@ -54,6 +56,12 @@ namespace PartyFi.Controllers
         public ActionResult Down(int? id)
         {
             PL.playlist[(int)id].rank--;
+            PL.sort();
+            return RedirectToAction("Create");
+        }
+        public ActionResult Remove(int? id)
+        {
+            PL.playlist[(int)id].hasPlayed = true;
             PL.sort();
             return RedirectToAction("Create");
         }
