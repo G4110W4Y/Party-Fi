@@ -15,8 +15,8 @@ namespace PartyFi.Models
 {
     public class Playlist
     {
-        //public string holdThis = "";
-
+        
+        public string PLName = "";
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
         public IList<Song> playlist = new List<Song>();
         public IList<FullTrack> searchTracks = new List<FullTrack>();
@@ -56,7 +56,8 @@ namespace PartyFi.Models
             for (int x = 0; x < playlist.Count; x++)
                 if (playlist[x].ID == ID)
                 {
-                    currentSong = playlist[x].song + "  Artist: " + playlist[x].artist;
+                    //currentSong = playlist[x].song + "  Artist: " + playlist[x].artist;
+                    currentSong = playlist[x].artist + " - " + playlist[x].song;
                 }
 
         }

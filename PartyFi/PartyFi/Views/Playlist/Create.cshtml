@@ -7,7 +7,7 @@
     var timer = null;
     function testKeyup() {
         clearTimeout(timer);
-        timer = setTimeout(doneTyping, 2000);
+        timer = setTimeout(doneTyping, 500);
     }
     function testKeydown() {
         clearTimeout(timer);
@@ -49,31 +49,18 @@
         $("#generatedULContainer").css("display", "none");
     }
 
-    //var time = new Date().getTime();
-    //$(document.body).bind("mousemove keypress", function (e) {
-    //    time = new Date().getTime();
-    //});
-
-    //function refresh() {
-    //    if (new Date().getTime() - time >= 1000)
-    //        window.location.reload(true);
-    //    else
-    //        setTimeout(refresh, 1000);
-    //}
-
-    //setTimeout(refresh, 1000);
-
     //auto refresh on playlist table
     $(function () {
-
-        setInterval(function () { $('#PLTable').load('/Playlist/PlaylistTable'); }, 3000); // every 3 sec
-
+        setInterval(function () { $('#PLTable').load('/Playlist/PlaylistTableCreate'); }, 3000); // every 3 sec
+    });
+    $(function () {
+        setInterval(function () { $('#currentSong').load('/Playlist/CurrentSong'); }, 3000); // every 3 sec
     });
 
 </script>
 
 <body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
-    <div class="row transparentBox" style="position:relative; z-index: 1;">
+    <div class="row transparentBox" style="position:relative; z-index: 9999;">
         <div class="col-sm-5" style="background-color:white; opacity:1.0; margin: 5px; height: 38px; vertical-align:middle;">
             <input type="text" onkeydown="testKeydown()" onkeyup="testKeyup()" id="search" class="form-control" placeholder="Search for a song..." style="max-width:75%">
             <div class="container-fluid" id="generatedULContainer" style="display: none; width: 75%; height: 226px; overflow: auto; margin-top: 0px; background-color: white; opacity:1.0;">
@@ -82,23 +69,21 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-5" style="background-color:white; opacity:0.7; text-align:left;"><h3 style="margin-top: 3px;">Code: @Model.code</h3></div>
+        <div class="col-sm-5" style="background-color:white; opacity:0.7; text-align:left;">
+            <h3 style="margin-top: 3px;">Code: @Model.code</h3>
+        </div>
         @*<div class="col-sm-1" style="background-color:white; opacity:0.7; float: right; margin: 3px;"><button type="button" class="btn">Veto</button></div>*@
     </div>
 
     <br />
-    <div class="row transparentBox" style="position:relative; z-index: 1;">
-        <div class="col-sm-12" style="background-color:white; opacity:0.7; text-align:left;">
-            <h3 style="margin-top: 3px;">Current Song: @Model.currentSong</h3>
-        </div>
+    <div id ="currentSong" class="row transparentBox" style="position:relative; z-index: 1;">
+        @{Html.RenderAction("CurrentSong", "Playlist"); }
     </div>
     <br />
 
     <div class="row">
         <div id="PLTable" class="col-sm-5 container-fluid transparentBox" style="position:relative; vertical-align:middle; z-index: 1; background-color:white; opacity:0.6; display:table-header-group; height:100%; width:100%; padding:0; margin:0;">
-            @*<div id="PLTable" class="col-sm-12 container-fluid transparentBox" style="position:relative; z-index: 1; background-color:white; opacity:0.6; display:table-header-group; width:100%;">*@
-
-            @{Html.RenderAction("PlaylistTable", "Playlist");}
+            @{Html.RenderAction("PlaylistTableCreate", "Playlist");}
         </div>
     </div>
 </body>

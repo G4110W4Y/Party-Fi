@@ -195,7 +195,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Playlist\Create.cshtml" />
-    <Content Include="Views\Playlist\PlaylistTable.cshtml" />
+    <Content Include="Views\Playlist\PlaylistTableCreate.cshtml" />
+    <Content Include="Views\Playlist\CurrentSong.cshtml" />
+    <Content Include="Views\Playlist\PlaylistTableJoin.cshtml" />
+    <Content Include="Views\Playlist\Join.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

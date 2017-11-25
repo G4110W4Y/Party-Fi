@@ -18,13 +18,29 @@
         $('#host').show();
     }
 
-    function alert(badCode) {
-        if (badCode == "true")
-            alert("The code you entered was no good! :(");
+    function validateForm() {
+        var codeInput = document.getElementById('codeInput').value;
+        alert(codeInput);
+        $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '@Url.Action("ValidateCode", "Home")',
+                success: function (list) {
+                    for (var i = 0; i < list.length; i++){
+                        if (list[i] == codeInput)
+                            return true;
+                    }
+                    alert("A party does not exist for the code you entered!");
+                    return false;
+                },
+                error: function (ajaxContext) {
+                    alert(ajaxContext.responseText)
+                }
+            });
     }
 </script>
 
-<body onload="alert(@Model.badCode)" style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
+<body style="background-image: url('../../images/HomeBG.jpg'); background-attachment: fixed; background-position: top center;">
     <div class="transparentBox" id="hostButton" onclick="openCreateBox()" style="width: 45.5%;vertical-align: middle; height: 92%; float: left; margin-right: 1.5%;padding:13px">
         <h1 style="margin-bottom:20px;">Host a Party Playlist</h1>
     </div>
@@ -42,10 +58,10 @@
     </div>
     <div class="transparentBox" id="join" style="display:none; width: 23%; height:15%; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; max-height: 100%; max-width: 100%;">
         <div style="vertical-align: middle; top: 50%; margin-top:5%; margin-bottom: 5%;">
-            @using (Html.BeginForm("Join", "Home"))
+            @using (Html.BeginForm("Join", "Home", FormMethod.Get, new {onSubmit = "return validateCode();"}))
             {
                 <input class="form-control" name="codeInput" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Enter the code for your party!" required />
-                <button id="joinButton" type="submit" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
+                <button id="joinButton" type="submit" onSubmit="return validateForm();" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
             }
         </div>
     </div>

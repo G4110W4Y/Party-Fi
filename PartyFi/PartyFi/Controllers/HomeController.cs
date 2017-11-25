@@ -14,9 +14,9 @@ namespace PartyFi.Controllers
 
         //NEEDS TO ACCOUNT FOR BAD CODES
         [HttpGet]
-        public ActionResult Index(bool badCode = false)
+        public ActionResult Index()
         {
-            view.badCode = badCode;
+            //view.badCode = badCode;
             return View(view);
         }
 
@@ -24,14 +24,16 @@ namespace PartyFi.Controllers
             return RedirectToAction("Create", "Playlist", new { playlistName = plName });
         }
 
-        public ActionResult Join(string codeInput)
+        public ActionResult Join()
         {
             temp.stuff.Add("Popeyes89", new Playlist());
 
-            if (temp.stuff.ContainsKey(codeInput))
-                return RedirectToAction("Join", "Playlist");
-            else
-                return RedirectToAction("Index", new {badCode = true});
+            return RedirectToAction("Join", "Playlist");
+        }
+
+        public ActionResult ValidateCode()
+        {
+            return Json(new List<String>(temp.stuff.Keys), JsonRequestBehavior.AllowGet);
         }
     }
 }
