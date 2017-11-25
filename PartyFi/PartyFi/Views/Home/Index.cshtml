@@ -6,7 +6,19 @@
 <link rel="stylesheet" href="~/Content/Home.css" />
 
 <script>
+    var codelist;
     function openCodeBoxJoin() {
+        $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '@Url.Action("ValidateCode", "Home")',
+                success: function (list) {
+                    codelist = list;
+                },
+                error: function (ajaxContext) {
+                    alert(ajaxContext.responseText)
+                }
+            });
         $('#joinButton').remove();
         $('#hostButton').remove();
         $('#join').show();
@@ -20,23 +32,12 @@
 
     function validateForm() {
         var codeInput = document.getElementById('codeInput').value;
-        alert(codeInput);
-        $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '@Url.Action("ValidateCode", "Home")',
-                success: function (list) {
-                    for (var i = 0; i < list.length; i++){
-                        if (list[i] == codeInput)
-                            return true;
-                    }
-                    alert("A party does not exist for the code you entered!");
-                    return false;
-                },
-                error: function (ajaxContext) {
-                    alert(ajaxContext.responseText)
-                }
-            });
+        for (var i = 0; i < codelist.length; i++) {
+            if (list[i] == codeInput)
+                return true;
+        }
+        alert("A party does not exist for the code you entered!");
+        return false;
     }
 </script>
 
@@ -58,10 +59,10 @@
     </div>
     <div class="transparentBox" id="join" style="display:none; width: 23%; height:15%; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; max-height: 100%; max-width: 100%;">
         <div style="vertical-align: middle; top: 50%; margin-top:5%; margin-bottom: 5%;">
-            @using (Html.BeginForm("Join", "Home", FormMethod.Get, new {onSubmit = "return validateCode();"}))
-            {
+            @using ((Html.BeginForm("Join", "Home", FormMethod.Get, new { onsubmit = "return validateForm()" })))
+            { 
                 <input class="form-control" name="codeInput" id="codeInput" type="text" style="width:75%; margin: 0 auto; text-align:center;" placeholder="Enter the code for your party!" required />
-                <button id="joinButton" type="submit" onSubmit="return validateForm();" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
+                <button id="joinButton" type="submit" class="btn btn-success" style="margin-top: 15px;">Join the party!</button>
             }
         </div>
     </div>

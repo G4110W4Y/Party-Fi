@@ -10,13 +10,12 @@ namespace PartyFi.Controllers
     public class HomeController : Controller
     {
         public keys temp = new keys();
+        public List<string> keys = new List<string>();
         public HomeViewModel view = new HomeViewModel();
 
-        //NEEDS TO ACCOUNT FOR BAD CODES
         [HttpGet]
         public ActionResult Index()
         {
-            //view.badCode = badCode;
             return View(view);
         }
 
@@ -26,14 +25,15 @@ namespace PartyFi.Controllers
 
         public ActionResult Join()
         {
-            temp.stuff.Add("Popeyes89", new Playlist());
-
             return RedirectToAction("Join", "Playlist");
         }
 
         public ActionResult ValidateCode()
         {
-            return Json(new List<String>(temp.stuff.Keys), JsonRequestBehavior.AllowGet);
+            //asking to validate to create an instance of playlist
+            //this.temp.stuff.Add("Popeyes89", new Playlist());
+            keys.Add("Popeyes89");
+            return Json(this.keys, JsonRequestBehavior.AllowGet);
         }
     }
 }

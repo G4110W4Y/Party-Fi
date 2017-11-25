@@ -31,10 +31,7 @@ namespace PartyFi.Models
             Task.Run(() => Authentication());
             timer = new Timer(Advance);
         }
-        //public void Json()
-        //{
-        //    json =new JavaScriptSerializer().Serialize(playlist);
-        //}
+
         public void Advance(Object sender)
         {
             // i wanted t oqueue songs when the current is close to ending but you can't actually see the user's position in the currently playing song
