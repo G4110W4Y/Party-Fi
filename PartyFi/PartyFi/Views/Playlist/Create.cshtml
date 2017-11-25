@@ -7,7 +7,7 @@
     var timer = null;
     function testKeyup() {
         clearTimeout(timer);
-        timer = setTimeout(doneTyping, 500);
+        timer = setTimeout(doneTyping, 400);
     }
     function testKeydown() {
         clearTimeout(timer);
@@ -40,6 +40,7 @@
         }
     }
     function addSong(Uri) {
+        document.getElementById("search").value = "";
         $.ajax({
                 type: "POST",
                 dataType: "json",
