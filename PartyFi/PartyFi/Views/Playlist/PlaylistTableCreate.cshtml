@@ -17,10 +17,10 @@
             <tr>
                 <td style="width: 10%;">
                     <div class="row">
-                        @Html.ActionLink("Up  ", "Up", new { id = Model.playlist.IndexOf(song) })
+                        @Html.ActionLink("Up  ", "Up", new { id = Model.playlist.IndexOf(song), joinOrCreate = "Create" })
                     </div>
                     <div class="row">
-                        @Html.ActionLink("  Down", "Down", new { id = Model.playlist.IndexOf(song) })
+                        @Html.ActionLink("  Down", "Down", new { id = Model.playlist.IndexOf(song), joinOrCreate = "Create" })
                     </div>
 
                 </td>

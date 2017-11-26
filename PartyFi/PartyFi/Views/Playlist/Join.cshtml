@@ -44,7 +44,7 @@
                 type: "POST",
                 dataType: "json",
                 url: '@Url.Action("AddSong", "Playlist")',
-                data: { song: Uri }
+                data: { song: Uri, joinOrCreate: "Join"}
         });
         $("#generatedULContainer").css("display", "none");
     }

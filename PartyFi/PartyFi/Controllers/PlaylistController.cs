@@ -57,24 +57,30 @@ namespace PartyFi.Controllers
 
         //add song selected from search
         [HttpPost]
-        public ActionResult AddSong(string song)
+        public ActionResult AddSong(string song, string joinOrCreate)
         {
             PL.addSong(song);
-            return RedirectToAction("Create");
+            if (joinOrCreate == "Create")
+                return RedirectToAction("Create");
+            return RedirectToAction("Join");
         }
         //up vote a song
-        public ActionResult Up(int? id)
+        public ActionResult Up(int? id, string joinOrCreate)
         {
             PL.playlist[(int)id].rank++;
             PL.sort();
-            return RedirectToAction("Create");
+            if (joinOrCreate == "Create")
+                return RedirectToAction("Create");
+            return RedirectToAction("Join");
         }
         //down vote a song
-        public ActionResult Down(int? id)
+        public ActionResult Down(int? id, string joinOrCreate)
         {
             PL.playlist[(int)id].rank--;
             PL.sort();
-            return RedirectToAction("Create");
+            if (joinOrCreate == "Create")
+                return RedirectToAction("Create");
+            return RedirectToAction("Join");
         }
         //remove a song
         public ActionResult Remove(int? id)
