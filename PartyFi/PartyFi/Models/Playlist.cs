@@ -15,14 +15,14 @@ namespace PartyFi.Models
 {
     public class Playlist
     {
-        
+
         public string PLName = "";
         private static SpotifyWebAPI Spotify = new SpotifyWebAPI();
         public IList<Song> playlist = new List<Song>();
         public IList<FullTrack> searchTracks = new List<FullTrack>();
         private static PrivateProfile profile;
         public string code;
-        public string currentSong = "nothing";
+        public string currentSong = "Nothing Currently Playing";
         public Timer timer;
         public string json;
 
@@ -62,11 +62,11 @@ namespace PartyFi.Models
         public async void Trest()
         {
             // Some ghostemane--nah fam
-            addSong("3FtYbEfBqAlGO46NUDQSAt");
+            //addSong("3FtYbEfBqAlGO46NUDQSAt");
             // Some weeb shit
-            addSong("2pxftVTI1ACfpvcryvebxd");
+            //addSong("2pxftVTI1ACfpvcryvebxd");
             // Some basic shit
-            addSong("060X6dRG9lWF1sp8y1ssYe");
+            //addSong("060X6dRG9lWF1sp8y1ssYe");
             // If i have to hear the first 10 seconds of "Boys" one more time i fucking swear i will delete the entire internet
             //       ErrorResponse error = Spotify.ResumePlayback(uris: new List<string> { "spotify:track:1gei6SEOLzPjMGY2TA95nq" });      //test play
             // Play the song for 30 seconds before going into the main queueing system
@@ -79,7 +79,7 @@ namespace PartyFi.Models
             "http://localhost",
             8000,
             "ba75619adcea46109349a260a683d184",   //Client ID
-            Scope.UserReadPrivate | Scope.Streaming,
+            Scope.UserReadPrivate | Scope.Streaming | Scope.UserReadPlaybackState,
             TimeSpan.FromSeconds(20)
             );
 
@@ -97,7 +97,8 @@ namespace PartyFi.Models
 
             if (Spotify == null)
                 return;
-            Trest();
+            ErrorResponse error = Spotify.PausePlayback();
+            //Trest();
         }
 
         //public static void createPlaylist(string name)
@@ -133,8 +134,22 @@ namespace PartyFi.Models
             Song newsong = new Song() { ID = URI, rank = 1, song = name, artist = laArtista, hasPlayed = false, length = track.DurationMs };
             // if a rank goes below 1, we need to be sure to insert the new song before that spot in the list
             // hahaha i lied. let's just make a sorting function to sort hte list everytime we add shit. (sort by rank, and preserve original order)
-            playlist.Add(newsong);
-            sort();
+
+            PlaybackContext context = Spotify.GetPlayback();
+            //int time = context.ProgressMs;
+            //Thread.Sleep(500);
+            //context = Spotify.GetPlayback();
+            if (/*time - context.ProgressMs == 0*/ !context.IsPlaying)
+            {
+                playSong(URI);
+                timer.Change(30000, track.DurationMs);
+                currentSong = laArtista + " - " + name;
+            }
+            else
+            {
+                playlist.Add(newsong);
+                sort();
+            }
 
             //Json();
 
